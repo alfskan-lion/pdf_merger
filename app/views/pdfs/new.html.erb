@@ -1,0 +1,8 @@
+<%= form_for @pdf do |f| %>
+  <div>
+    <%= f.label :pdf %>
+    <%= f.file_field :pdf, multiple: true %>
+  </div>
+ 
+  <%= f.submit value: 'PDF 합치기' %>
+<% end %>
