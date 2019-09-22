@@ -1,0 +1,8 @@
+<%= form_tag(merge_path(@id), :method => "GET") do %>
+  <% @pdfs.each do |p| %>
+    <%= radio_button_tag(:index, "#{p.index}") %>
+    <%= label_tag(:index, "#{p.identifier}") %>
+    <br>
+  <% end %>
+  <%= submit_tag("병합하기") %>
+<% end %>
