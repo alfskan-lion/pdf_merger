@@ -32,20 +32,22 @@ class PdfsController < ApplicationController
       @pdfs.insert(0, @pdfs.delete_at(index))
     end
     for i in 0..@pdfs.length-1
-      pdf << CombinePDF.load("public/uploads/pdf/pdf/#{params[:id]}/#{@pdfs[i].identifier}") 
+      pdf << CombinePDF.load("public/uploads/pdf/#{params[:id]}/#{@pdfs[i].identifier}") 
     end
-    pdf.save "public/uploads/pdf/pdf/#{params[:id]}/#{@pdfs.first.file.basename}_combined.pdf"
-    redirect_to download_path(params[:id])
+    pdf.save "public/uploads/pdf/#{params[:id]}/#{@pdfs.first.file.basename}_combined.pdf"
+    redirect_to download_path(params[:id], index)
   end
   
   def download
     @id = params[:id]
+    @index_id = params[:index_id]
   end
   
   def download_pdf
+    index = params[:index_id].to_i
     send_file(
-    "public/uploads/pdf/pdf/#{params[:id]}/#{@pdfs.first.file.basename}_combined.pdf",
-    filename: "#{@pdfs.first.file.basename}_combined.pdf",
+    "public/uploads/pdf/#{params[:id]}/#{@pdfs[index].file.basename}_combined.pdf",
+    filename: "#{@pdfs[index].file.basename}_combined.pdf",
     type: "application/pdf"
     )
   end
@@ -53,7 +55,7 @@ class PdfsController < ApplicationController
   def destroy
     @pdf = Pdf.find(params[:id])
     @pdf.destroy
-    FileUtils.rm_rf("public/uploads/pdf/pdf/#{params[:id]}/")
+    FileUtils.rm_rf("public/uploads/pdf/#{params[:id]}/")
     redirect_to new_pdf_path
   end
   
