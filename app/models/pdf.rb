@@ -1,4 +1,4 @@
 class Pdf < ApplicationRecord
   mount_uploaders :pdf, PdfUploader
-  serialize :avatars, JSON
+  serialize :pdf, JSON
 end
