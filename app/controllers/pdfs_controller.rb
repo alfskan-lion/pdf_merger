@@ -51,6 +51,10 @@ class PdfsController < ApplicationController
   end
   
   def destroy
+    @pdf = Pdf.find(params[:id])
+    @pdf.destroy
+    FileUtils.rm_rf("public/uploads/pdf/pdf/#{params[:id]}/")
+    redirect_to new_pdf_path
   end
   
   private
