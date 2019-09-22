@@ -18,11 +18,16 @@ class PdfsController < ApplicationController
   end
   
   def merge
+    @pdf = Pdf.find(params[:id])
     pdf = CombinePDF.new
-    pdf << CombinePDF.load("public/uploads/pdf/pdf/#{params[:id]}/file1.pdf") 
-    pdf << CombinePDF.load("public/uploads/pdf/pdf/#{params[:id]}/file2.pdf")
+    pdf << CombinePDF.load("public/uploads/pdf/pdf/#{params[:id]}/#{@pdf.pdf[0].identifier}") 
+    pdf << CombinePDF.load("public/uploads/pdf/pdf/#{params[:id]}/#{@pdf.pdf[1].identifier}")
     pdf.save "public/uploads/pdf/pdf/#{params[:id]}/combined.pdf"
     redirect_to download_path(params[:id]), notice: "The pdf has been combined."
+  end
+  
+  def selects
+    @pdf = Pdf.find(params[:id])
   end
   
   def download
